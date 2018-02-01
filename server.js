@@ -2,10 +2,14 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+var exphbs  = require('express-handlebars');
 
 //Our scraping tools
 var axios = require("axios");
 var cheerio = require("cheerio");
+
+
+
 
 //Require models
 var db = require("./models");
@@ -14,6 +18,17 @@ var PORT = 3000;
 
 //initialize express
 var app = express();
+
+
+
+
+// views
+  // layouts
+    // file_name
+
+// Configure Handlebars
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 
 //Configure middleware
 
@@ -36,7 +51,21 @@ mongoose.connect("mongodb://localhost/relixPopulator", {
 
 
 
+app.get("/", function(req, res) {
 
+  db.Article
+    .find({})
+    .then(function (dbArticle) {
+      // If we were able to successfully find Articles, send them back to the client
+      res.render("index", { data: dbArticle });
+    })
+    .catch(function (err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+
+  
+});
 
 //Get route for scraping the relix website
 app.get("/scrape", function (req, res) {
@@ -50,30 +79,29 @@ app.get("/scrape", function (req, res) {
 
     //now grab every div with a class of post
     $(".post").each(function (i, element) {
+
+
+      // console.log("Image: ", $(this).find(".newsBrowseBodies").text());;
       // Add the text and href of every link, and save them as propreties of the result object
       var result = {}; // all the results
       try {
+       
         result.title = $(this)
-          .chilldren(".withImg")
-          .children("h2.headline")
-          .children("a")
-          .children("p")
+          .find("h2.headline a p")
           .text();
         result.link = $(this)
-          .chilldren(".withImg")
-          .children("h2.headline")
-          .children("a")
+          .find("h2.headline a")
           .attr("href");
         result.summary = $(this)
-          .children(".withimg")
-          .children(".newsBrowseBodies")
+          .find(".newsBrowseBodies")
           .text();
-        resilt.image = $(this)
-          .children("img")
+        
           
       } catch (error) {
         console.log("There is no scraping for this")
       }
+
+      console.log("Results: ", result);
 
       final_results.push(result);
       // console.log("Result: ", result);    
