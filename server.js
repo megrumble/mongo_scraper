@@ -48,18 +48,29 @@ app.get("/scrape", function (req, res) {
     var $ = cheerio.load(response.data);
     var final_results = []; 
 
-    //now grab every h2 with a class of headline
-    $("h2.headline").each(function (i, element) {
+    //now grab every div with a class of post
+    $(".post").each(function (i, element) {
       // Add the text and href of every link, and save them as propreties of the result object
       var result = {}; // all the results
       try {
         result.title = $(this)
+          .chilldren(".withImg")
+          .children("h2.headline")
           .children("a")
           .children("p")
           .text();
         result.link = $(this)
+          .chilldren(".withImg")
+          .children("h2.headline")
           .children("a")
           .attr("href");
+        result.summary = $(this)
+          .children(".withimg")
+          .children(".newsBrowseBodies")
+          .text();
+        resilt.image = $(this)
+          .children("img")
+          
       } catch (error) {
         console.log("There is no scraping for this")
       }
