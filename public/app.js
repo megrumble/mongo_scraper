@@ -27,7 +27,7 @@
 
 
 // Whenever someone clicks a p tag
-$("#comment").on("click", function () {
+$("#articles").on("click", "p", function () {
   console.log("hi");
   // Empty the notes from the note section
   $("#notes").empty();
