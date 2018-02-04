@@ -43,7 +43,7 @@ app.use(express.static("public"));
 //Connect to the Mongo DB
 
 mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost/relixPopulator", {
+mongoose.connect("mongodb://heroku_xxkr78kt:bmo54c3q0c31m1u2fc0ldn2io4@ds225038.mlab.com:25038/heroku_xxkr78kt", {
   useMongoClient: true
 });
 
