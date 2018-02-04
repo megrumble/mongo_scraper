@@ -55,8 +55,10 @@ app.get("/", function(req, res) {
 
   db.Article
     .find({})
+    .populate("note")
     .then(function (dbArticle) {
       // If we were able to successfully find Articles, send them back to the client
+      console.log("Articles: ", dbArticle);
       res.render("index", { data: dbArticle });
     })
     .catch(function (err) {
@@ -113,7 +115,7 @@ app.get("/scrape", function (req, res) {
       .create(final_results)
       .then(function (dbArticle) {
         // If we were able to successfully scrape and save an Article, send a message to the client
-        res.send("Scrape Complete");
+        res.redirect("/");
       })
       .catch(function (err) {
         //if an error occurred, send it to the client
@@ -140,6 +142,8 @@ app.get("/articles", function (req, res) {
 // Route for grabbing a specific Article by id, populate it with it's note
 app.get("/articles/:id", function (req, res) {
   // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+
+  console.log("Body: ", req.params.id);
   db.Article
     .findOne({ _id: req.params.id })
     // ..and populate all of the notes associated with it

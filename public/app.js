@@ -25,72 +25,72 @@
 //   }
 // });
 //Handle Scrape button
-$("#scrape").on("click", function() {
+$("#scrape").on("click", function () {
   $.ajax({
-      method: "GET",
-      url: "/scrape",
-  }).done(function(data) {
-      console.log(data)
+    method: "GET",
+    url: "/scrape",
+  }).done(function (data) {
+    console.log(data)
   })
 });
 
 //Handle Save Article button
-$(".save").on("click", function() {
+$(".save").on("click", function () {
   var thisId = $(this).attr("data-id");
   $.ajax({
-      method: "POST",
-      url: "/articles/save/" + thisId
-  }).done(function(data) {
-      window.location = "/"
+    method: "POST",
+    url: "/articles/save/" + thisId
+  }).done(function (data) {
+    window.location = "/"
   })
 });
 
 
 //Handle Delete Article button
-$(".delete").on("click", function() {
+$(".delete").on("click", function () {
   var thisId = $(this).attr("data-id");
   $.ajax({
-      method: "POST",
-      url: "/articles/delete/" + thisId
-  }).done(function(data) {
-      window.location = "/saved"
+    method: "POST",
+    url: "/articles/delete/" + thisId
+  }).done(function (data) {
+    window.location = "/saved"
   })
 });
 
 //Handle Save Note button
-$(".saveNote").on("click", function() {
-  var thisId = $(this).attr("data-id");
-  if (!$("#noteText" + thisId).val()) {
-      alert("please enter a note to save")
-  }else {
-    $.ajax({
-          method: "POST",
-          url: "/notes/save/" + thisId,
-          data: {
-            text: $("#noteText" + thisId).val()
-          }
-        }).done(function(data) {
-            // Log the response
-            console.log(data);
-            // Empty the notes section
-            $("#noteText" + thisId).val("");
-            $(".modalNote").modal("hide");
-            window.location = "/saved"
-        });
-  }
-});
+// $(".saveNote").on("click", function () {
+//   var thisId = $(this).attr("data-id");
+//   if (!$("#noteText" + thisId).val()) {
+//     alert("please enter a note to save")
+//   } else {
+//     $.ajax({
+//       method: "POST",
+//       url: "/notes/save/" + thisId,
+//       data: {
+//         text: $("#noteText" + thisId).val()
+//       }
+//     }).done(function (data) {
+//       // Log the response
+//       console.log(data);
+//       // Empty the notes section
+//       $("#noteText" + thisId).val("");
+//       $(".modalNote").modal("hide");
+//       window.location = "/saved"
+//     });
+//   }
+// });
 
 //Handle Delete Note button
-$(".deleteNote").on("click", function() {
+$(".deleteNote").on("click", function () {
   var noteId = $(this).attr("data-note-id");
   var articleId = $(this).attr("data-article-id");
   $.ajax({
-      method: "DELETE",
-      url: "/notes/delete/" + noteId + "/" + articleId
-  }).done(function(data) {
-      console.log(data)
-      $(".modalNote").modal("hide");
-      window.location = "/saved"
+    method: "DELETE",
+    url: "/notes/delete/" + noteId + "/" + articleId
+  }).done(function (data) {
+    console.log(data)
+    $(".modalNote").modal("hide");
+    window.location = "/saved"
   })
 });
 // Whenever someone clicks a p tag
@@ -128,10 +128,30 @@ $("#articles").on("click", "h4", function () {
     });
 });
 
+
+
+
+
+
+// Show Note input
+$(".note").on("click", function () {
+  let id = $(this).attr("data-id"); // id
+
+  $(".current_note").remove();
+  $("#" + id).append(`
+    <div class = 'current_note'>
+      <input id='titleinput' name='title' >
+      <textarea id='bodyinput' name='body'></textarea>
+      <button data-savenote='${id}' class='savenote' >Save Note</button>
+    </div>
+  `);
+
+});
+
 // When you click the savenote button
-$(document).on("click", "#savenote", function () {
+$(document).on("click", ".savenote", function () {
   // Grab the id associated with the article from the submit button
-  var thisId = $(this).attr("data-id");
+  var thisId = $(this).attr("data-savenote");
 
   // Run a POST request to change the note, using what's entered in the inputs
   $.ajax({
@@ -156,3 +176,5 @@ $(document).on("click", "#savenote", function () {
   $("#titleinput").val("");
   $("#bodyinput").val("");
 });
+
+
