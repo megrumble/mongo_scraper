@@ -5,11 +5,6 @@ const mongoose = require("mongoose");
 const exphbs  = require('express-handlebars');
 const path = require("path");
 
-//Our scraping tools
-const axios = require("axios");
-const cheerio = require("cheerio");
-
-
 
 
 //Require models
@@ -19,26 +14,22 @@ const PORT = process.env.PORT || 3000;
 
 //initialize express
 const app = express();
-
-
-
-
-// views
-  // layouts
-    // file_name
+//Set up express router
+const router = express.Router();
 
 // Configure Handlebars
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 //Configure middleware
-
+app.use(router);
 //Use morgan logger for logging requests
 app.use(logger("dev"));
 //Use body-parser for handling form submissions
 app.use(bodyParser.urlencoded({ extended: false }));
+
 //Use express.static to server the public folder as a static directory
-app.use(express.static("public"));
+app.use(express.static(__dirname +"/public"));
 
 
 //Set mongoose to leverage built-in Javascript ES6 promises
@@ -52,8 +43,8 @@ mongoose.connect("mongodb://localhost:27017/relix-scraper", {
   useMongoClient: true
 });
 // Routes
-require('./routes/apiRoutes')(app);
-require('./routes/htmlRoutes')(app);
+require('./config/routes')(router);
+
 // app.get("/", function(req, res) {
 
 //   db.Article
