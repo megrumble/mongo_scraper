@@ -4,10 +4,10 @@ const cheerio = require("cheerio");
 
 var scrape = function(cb){ 
         //first grab the body of the html with the request
-        axios.get("http://www.relix.com/news/").then(function (err, response, cb) {
+        axios.get("http://www.relix.com/news/").then(function (response) {
             //then load that into cheerio and save it to $ for a shorthand selector
-            var $ = cheerio.load(body);
-            var articles = [];
+            var $ = cheerio.load(response.data);
+            var final_result = [];
 
             //now grab every div with a class of post
             $(".post").each(function (i, element) {
@@ -34,11 +34,12 @@ var scrape = function(cb){
                     console.log("There is no scraping for this")
                 }
 
-                articles.push(result);
+                final_result.push(result);
 
             });
+            cb(final_result); 
         });
-        cb(articles);    
+          
 }
 module.exports= scrape;
 
