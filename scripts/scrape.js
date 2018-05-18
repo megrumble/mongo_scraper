@@ -2,16 +2,12 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 
-module.exports = (cb) => {
-    //Get route for scraping the relix website
-    app.get("/api/scrape", (req, res) => {
-
-        // Debugging 
+var scrape = function(cb){ 
         //first grab the body of the html with the request
         axios.get("http://www.relix.com/news/").then(function (err, response, cb) {
             //then load that into cheerio and save it to $ for a shorthand selector
-            var $ = cheerio.load(response.data);
-            var final_result = [];
+            var $ = cheerio.load(body);
+            var articles = [];
 
             //now grab every div with a class of post
             $(".post").each(function (i, element) {
@@ -38,10 +34,11 @@ module.exports = (cb) => {
                     console.log("There is no scraping for this")
                 }
 
-                final_result.push(result);
+                articles.push(result);
 
             });
         });
-    });
-    cb(final_result);
+        cb(articles);    
 }
+module.exports= scrape;
+

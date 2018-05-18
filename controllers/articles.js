@@ -1,11 +1,11 @@
 //import our scrape and date scripts 
 
-const scrape = require("../scripts/scrape");
+var scrape = require("../scripts/scrape");
 const date = require("../scripts/date");
 
 //import the Article and Note models
-const Article = require("../models/article");
-const Note = require("../models/note");
+var Article = require("../models/article");
+var Note = require("../models/note");
 
 module.exports = {
     fetch: function (cb) {
@@ -35,9 +35,11 @@ module.exports = {
                 cb(doc);
             });
     },
-    update: function(query, cb){
-        Article.update({_id: query._id},{
+    update: function (query, cb) {
+        Article.update({
+            _id: query._id
+        }, {
             $set: query
-        }, {}, cb );
+        }, {}, cb);
     }
 }

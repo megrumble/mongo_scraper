@@ -1,3 +1,11 @@
+const scrape = require("../scripts/scrape");
+
+const articlesController= require("../controllers/articles");
+const notesController= require("../controllers/notes");
+
+
+
+
 module.exports = function (router) {
     //route to render home
     router.get("/", (req, res) => {
@@ -25,19 +33,19 @@ module.exports = function (router) {
         if (req.query.saved) {
             query = req.query
         }
-        articlesController.get(query, (data)=> {
+        articlesController.get(query, (data) => {
             res.json(data);
         });
     });
     router.delete("/api/articles/:id", (req, res) => {
         let query = {};
         query._id = req.params.id;
-        articlesController.delete(query, (err, data)=> {
+        articlesController.delete(query, (err, data) => {
             res.json(data);
         });
     });
     router.patch("/api/articles", (req, res) => {
-        articlesController.update(req.body, (err, data)=> {
+        articlesController.update(req.body, (err, data) => {
             res.json(data);
         });
     });
@@ -46,19 +54,19 @@ module.exports = function (router) {
         if (req.params.article_id) {
             query._id = req.params.article_id;
         }
-        notesController.get(query, (err, data)=> {
+        notesController.get(query, (err, data) => {
             res.json(data);
         });
     });
     router.delete("/api/notes/:id", (req, res) => {
         let query = {};
         query._id = req.params.id;
-        notesController.delete(query, (err, data)=> {
+        notesController.delete(query, (err, data) => {
             res.json(data);
         });
     });
-    router.post ("/api/notes", (req, res)=>{
-        notesController.save(req.body, (data)=>{
+    router.post("/api/notes", (req, res) => {
+        notesController.save(req.body, (data) => {
             res.json(data);
         });
     });

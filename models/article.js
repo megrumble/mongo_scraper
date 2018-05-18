@@ -24,11 +24,11 @@ let ArticleSchema = new Schema({
   },
 
   date:{
-    type: string
+    type:String,
   },
 
   saved: {
-   type: boolean,
+   type: Boolean,
    default: false 
   },
   // `note` is an object that stores a Note id

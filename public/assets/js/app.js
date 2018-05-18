@@ -1,122 +1,108 @@
-// $(document).ready(() => {
-//   const saveArticleClick = (event) => {
-//       const {title, url } = event.target;
-//       const article = {
-//           title: title,
-//           url: url
-//       };
-       
-//       $.ajax({
-//           url: '/api/addArticle',
-//           method: "POST",
-//           data: article,
-//           success: (response) => {
-//               showModal("Article Added.", response);
-//           }
-//       })
-//   };
-  
-//   const showModal = (title, body) => {
-//       $("#modal-title").text(title);
-//       $("#modal-body").html(body);
-//       $("#alert-modal").modal();
-//   }
-//   $("#scrape").on("click", () => {
-//       $.ajax({
-//           url: '/scrape',
-//           method: "GET",
-//           contentType: "text/html",
-//           success: (data) => {
-//               $("#article-list").html(data);
-//               showModal("We've found articles!", '<p>New articles have been added to the list.</p><p>Be sure to save the ones you want to read later.</p>');
-//           }   
-//       })
-//   });
-
-//   $("#article-list").on("click", ".save-button", saveArticleClick)
-// })
-//Handle Scrape button
-$("#scrape").on("click", function() {
-  $.ajax({
-      method: "GET",
-      url: "/scrape",
-  }).done(function(data) {
-      console.log(data)
-  })
-});
-
-//Handle Save Article button
-$(".save").on("click", function() {
-  var thisId = $(this).attr("data-id");
-  $.ajax({
-      method: "POST",
-      url: "/articles/save/" + thisId
-  }).done(function(data) {
-      window.location = "/"
-  })
-});
+$(document).ready(function () {
+  //set reference to article-container div where all dynamically generated articles will go
+  //add event listeners for scrape and add buttons
+  const articleContainer = $(".article-container");
+  $(document).on("click", ".btn.save", handleArticleSave);
+  $(document).on("click", ".scrape-new", handleArticleScrape);
 
 
-// Whenever someone clicks a p tag
-$("#articles").on("click", "h4", function () {
-  console.log("hi");
-  // Empty the notes from the note section
-  $("#notes").empty();
-  // Save the id from the p tag
-  var thisId = $(this).attr("data-id");
+//once document is ready, run initPage function
+initPage();
 
-  // Now make an ajax call for the Article
-  $.ajax({
-    method: "GET",
-    url: "/articles/" + thisId
-  })
-    // With that done, add the note information to the page
-    .done(function (data) {
-      console.log(data);
-      // The title of the article
-      $("#notes").append("<h2>" + data.title + "</h2>");
-      // An input to enter a new title
-      $("#notes").append("<input id='titleinput' name='title' >");
-      // A textarea to add a new note body
-      $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
-      // A button to submit a new note, with the id of the article saved to it
-      $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
-
-      // If there's a note in the article
-      if (data.note) {
-        // Place the title of the note in the title input
-        $("#titleinput").val(data.note.title);
-        // Place the body of the note in the body textarea
-        $("#bodyinput").val(data.note.body);
+function initpage() {
+  //empty articleContainer, run ajax request for any unsaved articles
+  articleContainer.empty();
+  $.get("/api/articles?saved=false")
+    .then(function (data) {
+      //if articles, render them
+      if (data && data.length) {
+        renderArticles(data);
+      } else {
+        renderEmpty();
       }
     });
-});
+}
 
-// When you click the savenote button
-$(document).on("click", "#savenote", function () {
-  // Grab the id associated with the article from the submit button
-  var thisId = $(this).attr("data-id");
+function renderArticles(articles) {
+  const articlePanels = [];
 
-  // Run a POST request to change the note, using what's entered in the inputs
+  for (let i = 0; i < articles.length; i++) {
+    articlePanels.push(createPanel(articles[i]));
+  }
+  articleContainer.append(articlePanels);
+}
+
+function createPanel(article) {
+  //takes in a json object for the article then constructs a jquery element containing all of the html
+  const panel =
+    $(["<div class='panel panel-default'>",
+      "<div class='panel-heading'>",
+      "<h3>",
+      article.title,
+      "<a class='btn btn-success save'>",
+      "Save Article",
+      "</a>",
+      "</h3>",
+      "</div>",
+      "<div class='panel-body'>",
+      "<a href='article.link' target='_blank'>",
+      "</a>",
+      "<p>",
+      article.summary,
+      "</p>",
+      "</div>",
+    ].join(""));
+
+  panel.data("_id", article.id);
+  return panel;
+}
+
+function renderEmpty() {
+  const emptyAlert =
+    $(["<div class= 'alert alert-warning text-center>",
+      "<h4>There are no new articles</h4>",
+      "</div>",
+      "<div class='panel panel-default'>",
+      "<div class='panel-heading text-center>",
+      "<h3>What would you like to do?</h3>",
+      "</div>",
+      "<div class ='panel-body text-center'>",
+      "<h4><a class ='scrape-new'>Scrape New Articles?</a></h4>",
+      "<h4><a href='/saved'>Go to Saved Articles?</a></h4>",
+      "</div>",
+      "</div>"
+    ].join(""));
+
+  articleContainer.append(emptyAlert);
+}
+
+
+function handleArticleSave() {
+  //this function is triggered by the save button. 
+  //when we rendered the article initially we attached a javascript object using the headline id
+  //to the element using the .data method. here we retrieve that
+  let articleToSave = $(this).parents(".panel").data();
+  articleToSave.saved = true;
+  //use the patch method to update
   $.ajax({
-    method: "POST",
-    url: "/articles/" + thisId,
-    data: {
-      // Value taken from title input
-      title: $("#titleinput").val(),
-      // Value taken from note textarea
-      body: $("#bodyinput").val()
-    }
-  })
-    // With that done
-    .done(function (data) {
-      // Log the response
-      console.log(data);
-      // Empty the notes section
-      $("#notes").empty();
-    });
+      method: "PATCH",
+      url: "/api/articles",
+      data: articleToSave
+    })
+    .then(function (data) {
+      //if successful mongoose will send back an object containing a key of "ok" with the value of 1
+      if (data.ok) {
+        //running initPage will reload articles
+        initPage();
+      }
+    })
+}
 
-  // Also, remove the values entered in the input and textarea for note entry
-  $("#titleinput").val("");
-  $("#bodyinput").val("");
+function handleArticleScrape(){
+  $.get("/api/fetch")
+  .then(function(data){
+    initPage();
+    bootbox.alert("<h3 class='text-center' m-top-80>" * data.message * "</h3>");
+  });
+}
 });
