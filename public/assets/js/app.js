@@ -9,7 +9,7 @@ $(document).ready(function () {
 //once document is ready, run initPage function
 initPage();
 
-function initpage() {
+function initPage() {
   //empty articleContainer, run ajax request for any unsaved articles
   articleContainer.empty();
   $.get("/api/articles?saved=false")
@@ -39,17 +39,18 @@ function createPanel(article) {
       "<div class='panel-heading'>",
       "<h3>",
       article.title,
-      "<a class='btn btn-success save'>",
-      "Save Article",
-      "</a>",
-      "</h3>",
+     
       "</div>",
       "<div class='panel-body'>",
-      "<a href='article.link' target='_blank'>",
+      "<a href= ",article.link, "target= '_blank'>",
       "</a>",
       "<p>",
       article.summary,
       "</p>",
+      "<a class='btn btn-success save'>",
+      "Save Article",
+      "</a>",
+      "</h3>",
       "</div>",
     ].join(""));
 
@@ -101,6 +102,7 @@ function handleArticleSave() {
 function handleArticleScrape(){
   $.get("/api/fetch")
   .then(function(data){
+
     initPage();
     bootbox.alert("<h3 class='text-center' m-top-80>" * data.message * "</h3>");
   });
