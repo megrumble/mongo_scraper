@@ -33,7 +33,7 @@ body {
     opacity: 0.8;
     padding-top: 20px;
     margin: 0, auto;
-    box-shadow: 10px 5px 20px 2px lightslategray;
+    box-shadow: 10px 5px 20px 2px rgb(93, 63, 7);
     color: black;
 }
 .jumbotron .overlay {
@@ -92,6 +92,14 @@ textarea {
     box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.5);
     border-radius: 4px;
     animation: fadeIn 500ms ease-in-out;
+}
+.panel {
+    border: 1px solid #efe8ed;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    animation: fadeIn 500ms ease-in-out; 
 }
 
 
