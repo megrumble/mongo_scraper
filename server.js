@@ -27,6 +27,7 @@ app.use(router);
 app.use(logger("dev"));
 //Use body-parser for handling form submissions
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 //Use express.static to server the public folder as a static directory
 app.use(express.static(__dirname +"/public"));
@@ -43,7 +44,7 @@ mongoose.connect("mongodb://localhost:27017/relix-scraper", {
   useMongoClient: true
 });
 // Routes
-require('./config/routes')(router);
+require('./config/routes')(app);
 
 // app.get("/", function(req, res) {
 
