@@ -29,6 +29,27 @@
     </div>
 </div>
 <div class="container-fluid article-container">
+
+    {{!-- This is how we can get it done with HandleBars --}}
+    {{!-- Unless check for those that are false, which means those that haven't been saved yet --}}
+
+    {{#each articles}} {{#unless this.saved}}
+    <div class='panel panel-default'>
+        <h3> {{this.title}}</h3>
+
+        <div class='panel-body'>
+            <p>{{this.summary}}</p>
+            <a href="{{this.link}}" target='_blank'>{{this.link}}</a>
+
+            {{!-- // TODO --}}
+            {{!-- Handle Save Article button to save in DB --}}
+            <button class='btn btn-success save' data-id="{{this._id}}">Save Article</button>
+            
+        </div>
+
+    </div>
+    {{/unless}} {{/each}}
+
 </div>
 
 <footer class=" footer">
@@ -37,9 +58,9 @@
     </div>
 </footer>
 <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-    crossorigin="anonymous"></script>
-{{!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script> {{!--
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
     crossorigin="anonymous"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="../../assets/js/app.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" type="text/javascript"></script> 
+<script src="../../assets/js/app.js"></script> 

@@ -7,7 +7,7 @@ $(document).ready(function () {
 
 
 //once document is ready, run initPage function
-initPage();
+// initPage();
 
 function initPage() {
   //empty articleContainer, run ajax request for any unsaved articles
@@ -83,10 +83,15 @@ function handleArticleSave() {
   //when we rendered the article initially we attached a javascript object using the headline id
   //to the element using the .data method. here we retrieve that
   let articleToSave = $(this).parents(".panel").data();
+  const id = $(this).attr("data-id");
+
   articleToSave.saved = true;
+  articleToSave._id = id;
+  console.log("id: ", id);
+  console.log("Data: ", articleToSave);
   //use the patch method to update
   $.ajax({
-      method: "PATCH",
+      method: "POST",
       url: "/api/articles",
       data: articleToSave
     })
@@ -94,7 +99,7 @@ function handleArticleSave() {
       //if successful mongoose will send back an object containing a key of "ok" with the value of 1
       if (data.ok) {
         //running initPage will reload articles
-        initPage();
+        // initPage();
       }
     })
 }
@@ -108,3 +113,5 @@ function handleArticleScrape(){
   });
 }
 });
+
+
