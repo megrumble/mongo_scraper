@@ -4,78 +4,78 @@ $(document).ready(function () {
   const articleContainer = $(".article-container");
   $(document).on("click", ".btn.save", handleArticleSave);
   $(document).on("click", ".scrape-new", handleArticleScrape);
-
+  $(document).on("click", ".btn.delete", handleArticleDelete);
 
 //once document is ready, run initPage function
 // initPage();
 
-function initPage() {
-  //empty articleContainer, run ajax request for any unsaved articles
-  articleContainer.empty();
-  $.get("/api/articles?saved=false")
-    .then(function (data) {
-      //if articles, render them
-      if (data && data.length) {
-        renderArticles(data);
-      } else {
-        renderEmpty();
-      }
-    });
-}
+// function initPage() {
+//   //empty articleContainer, run ajax request for any unsaved articles
+//   articleContainer.empty();
+//   $.get("/api/articles?saved=false")
+//     .then(function (data) {
+//       //if articles, render them
+//       if (data && data.length) {
+//         renderArticles(data);
+//       } else {
+//         renderEmpty();
+//       }
+//     });
+// }
 
-function renderArticles(articles) {
-  const articlePanels = [];
+// function renderArticles(articles) {
+//   const articlePanels = [];
 
-  for (let i = 0; i < articles.length; i++) {
-    articlePanels.push(createPanel(articles[i]));
-  }
-  articleContainer.append(articlePanels);
-}
+//   for (let i = 0; i < articles.length; i++) {
+//     articlePanels.push(createPanel(articles[i]));
+//   }
+//   articleContainer.append(articlePanels);
+// }
 
-function createPanel(article) {
-  //takes in a json object for the article then constructs a jquery element containing all of the html
-  const panel =
-    $(["<div class='panel panel-default'>",
-      "<div class='panel-heading'>",
-      "<h3>",
-      article.title,
+// function createPanel(article) {
+//   //takes in a json object for the article then constructs a jquery element containing all of the html
+//   const panel =
+//     $(["<div class='panel panel-default'>",
+//       "<div class='panel-heading'>",
+//       "<h3>",
+//       article.title,
      
-      "</div>",
-      "<div class='panel-body'>",
-      "<a href= ",article.link, "target= '_blank'>",
-      "</a>",
-      "<p>",
-      article.summary,
-      "</p>",
-      "<a class='btn btn-success save'>",
-      "Save Article",
-      "</a>",
-      "</h3>",
-      "</div>",
-    ].join(""));
+//       "</div>",
+//       "<div class='panel-body'>",
+//       "<a href= ",article.link, "target= '_blank'>",
+//       "</a>",
+//       "<p>",
+//       article.summary,
+//       "</p>",
+//       "<a class='btn btn-success save'>",
+//       "Save Article",
+//       "</a>",
+//       "</h3>",
+//       "</div>",
+//     ].join(""));
 
-  panel.data("_id", article.id);
-  return panel;
-}
+//   panel.data("_id", article.id);
+//   return panel;
+// }
 
-function renderEmpty() {
-  const emptyAlert =
-    $(["<div class= 'alert alert-warning text-center>",
-      "<h4>There are no new articles</h4>",
-      "</div>",
-      "<div class='panel panel-default'>",
-      "<div class='panel-heading text-center>",
-      "<h3>What would you like to do?</h3>",
-      "</div>",
-      "<div class ='panel-body text-center'>",
-      "<h4><a class ='scrape-new'>Scrape New Articles?</a></h4>",
-      "<h4><a href='/saved'>Go to Saved Articles?</a></h4>",
-      "</div>",
-      "</div>"
-    ].join(""));
+// function renderEmpty() {
+//   const emptyAlert =
+//     $(["<div class= 'alert alert-warning text-center>",
+//       "<h4>There are no new articles</h4>",
+//       "</div>",
+//       "<div class='panel panel-default'>",
+//       "<div class='panel-heading text-center>",
+//       "<h3>What would you like to do?</h3>",
+//       "</div>",
+//       "<div class ='panel-body text-center'>",
+//       "<h4><a class ='scrape-new'>Scrape New Articles?</a></h4>",
+//       "<h4><a href='/saved'>Go to Saved Articles?</a></h4>",
+//       "</div>",
+//       "</div>"
+//     ].join(""));
 
-  articleContainer.append(emptyAlert);
-}
+//   articleContainer.append(emptyAlert);
+// }
 
 
 function handleArticleSave() {
@@ -89,7 +89,7 @@ function handleArticleSave() {
   articleToSave._id = id;
   console.log("id: ", id);
   console.log("Data: ", articleToSave);
-  //use the patch method to update
+  //use the post method to update
   $.ajax({
       method: "POST",
       url: "/api/articles",
@@ -98,6 +98,7 @@ function handleArticleSave() {
     .then(function (data) {
       //if successful mongoose will send back an object containing a key of "ok" with the value of 1
       if (data.ok) {
+        location.reload();
         //running initPage will reload articles
         // initPage();
       }
@@ -107,11 +108,30 @@ function handleArticleSave() {
 function handleArticleScrape(){
   $.get("/api/fetch")
   .then(function(data){
-
-    initPage();
-    bootbox.alert("<h3 class='text-center' m-top-80>" * data.message * "</h3>");
+  $(".articles").remove();
+  $.get("/").then( function(){
+    // bootbox.alert("<h3 class='text-center' m-top-80>" * data.message * "</h3>", function(result){
+      location.reload();
+    // });
+  })
+  
+   
   });
 }
+
+function handleArticleDelete(){
+  
+    var articleToDelete = {};
+    articleToDelete.id = $(this).data("id");
+    
+    $.ajax({
+        method: "DELETE",
+        url: "/api/articles?",
+        data: articleToDelete
+    }).then(function(data) {
+        location.reload();
+    });
+  }
 });
 
 

@@ -85,14 +85,14 @@ textarea {
     font-size: 18px;
 }
 
-#articles > div {
+/* #articles > div {
     border: 1px solid #efe8ed;
     padding: 20px;
     margin: 20px;
     box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.5);
     border-radius: 4px;
     animation: fadeIn 500ms ease-in-out;
-}
+} */
 .panel {
     border: 1px solid #efe8ed;
     padding: 20px;

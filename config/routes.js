@@ -18,7 +18,11 @@ module.exports = function(router) {
   });
   //route to render saved page
   router.get("/saved", (req, res) => {
-    res.render("saved");
+let query = {};
+    articlesController.get(query, data =>{
+      res.render("saved", { articles: data});
+    })
+    
   });
   router.get("/api/fetch", (req, res) => {
     articlesController.fetch(function(err, docs) {
