@@ -40,9 +40,40 @@
 
             {{!-- // TODO --}}
             {{!-- Handle Save Article button to save in DB --}}
-            <button class='btn btn-success note' data-id="{{this._id}}">Add Note</button>
+            <button class='btn btn-success note' data-toggle="modal" data-target="#noteModal" data-id="{{this._id}}">Add Note</button>
             <button class='btn btn-danger delete' data-id="{{this._id}}">Delete Article</button>
         </div>
+
+              <!-- Modal -->
+      <div id="noteModal" class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="noteModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <!--title including the id of the current article-->
+                      <h4 class="modal-title" id=""><b>Notes:</b></h4>
+                      <!--where notes will be displayed-->
+                      <div>
+                          <ul id="notesBody">
+
+                          </ul>
+                      </div>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-group">
+
+                          <label for="exampleTextarea">Enter New Note</label>
+                          <!--enter note text-->
+                          <textarea class="form-control" id="notestext" rows="3"></textarea>
+                      </div>
+                      <div><!--enter saved notes here--></div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button data-id={{_id}}  data-dismiss="modal" id="saveButton" class="btn btn-primary savenote">Save changes</button>
+                  </div>
+              </div>
+          </div>
+      </div>
 
     </div>
     {{/if}} {{/each}}

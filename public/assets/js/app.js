@@ -120,13 +120,14 @@ function handleArticleScrape(){
 }
 
 function handleArticleDelete(){
-  
-    var articleToDelete = {};
-    articleToDelete.id = $(this).data("id");
+  let articleToDelete = $(this).parents(".panel").data();
+  const id = $(this).attr("data-id");
+
+  articleToDelete._id = id;
     
     $.ajax({
         method: "DELETE",
-        url: "/api/articles?",
+        url: "/api/articles",
         data: articleToDelete
     }).then(function(data) {
         location.reload();
