@@ -1,81 +1,10 @@
 $(document).ready(function () {
-  //set reference to article-container div where all dynamically generated articles will go
-  //add event listeners for scrape and add buttons
-  const articleContainer = $(".article-container");
+
+  //add event listeners for scrape, save, and delete buttons
+
   $(document).on("click", ".btn.save", handleArticleSave);
   $(document).on("click", ".scrape-new", handleArticleScrape);
   $(document).on("click", ".btn.delete", handleArticleDelete);
-
-//once document is ready, run initPage function
-// initPage();
-
-// function initPage() {
-//   //empty articleContainer, run ajax request for any unsaved articles
-//   articleContainer.empty();
-//   $.get("/api/articles?saved=false")
-//     .then(function (data) {
-//       //if articles, render them
-//       if (data && data.length) {
-//         renderArticles(data);
-//       } else {
-//         renderEmpty();
-//       }
-//     });
-// }
-
-// function renderArticles(articles) {
-//   const articlePanels = [];
-
-//   for (let i = 0; i < articles.length; i++) {
-//     articlePanels.push(createPanel(articles[i]));
-//   }
-//   articleContainer.append(articlePanels);
-// }
-
-// function createPanel(article) {
-//   //takes in a json object for the article then constructs a jquery element containing all of the html
-//   const panel =
-//     $(["<div class='panel panel-default'>",
-//       "<div class='panel-heading'>",
-//       "<h3>",
-//       article.title,
-     
-//       "</div>",
-//       "<div class='panel-body'>",
-//       "<a href= ",article.link, "target= '_blank'>",
-//       "</a>",
-//       "<p>",
-//       article.summary,
-//       "</p>",
-//       "<a class='btn btn-success save'>",
-//       "Save Article",
-//       "</a>",
-//       "</h3>",
-//       "</div>",
-//     ].join(""));
-
-//   panel.data("_id", article.id);
-//   return panel;
-// }
-
-// function renderEmpty() {
-//   const emptyAlert =
-//     $(["<div class= 'alert alert-warning text-center>",
-//       "<h4>There are no new articles</h4>",
-//       "</div>",
-//       "<div class='panel panel-default'>",
-//       "<div class='panel-heading text-center>",
-//       "<h3>What would you like to do?</h3>",
-//       "</div>",
-//       "<div class ='panel-body text-center'>",
-//       "<h4><a class ='scrape-new'>Scrape New Articles?</a></h4>",
-//       "<h4><a href='/saved'>Go to Saved Articles?</a></h4>",
-//       "</div>",
-//       "</div>"
-//     ].join(""));
-
-//   articleContainer.append(emptyAlert);
-// }
 
 
 function handleArticleSave() {
@@ -122,17 +51,69 @@ function handleArticleScrape(){
 function handleArticleDelete(){
   let articleToDelete = $(this).parents(".panel").data();
   const id = $(this).attr("data-id");
-
+  articleToDelete.saved = false;
   articleToDelete._id = id;
     
     $.ajax({
-        method: "DELETE",
-        url: "/api/articles",
+        method: "POST",
+        url: "/api/articles/",
         data: articleToDelete
     }).then(function(data) {
         location.reload();
     });
   }
 });
+
+$('.saved-buttons').on('click',  function () {
+  // the NEWS article id
+  var thisId = $(this).attr("data-value");
+
+  //attach news article _id to the save button in the modal for use in save post
+  $("#saveNote").attr({"data-value": thisId});
+
+  //make an ajax call for the notes attached to this article
+  $.get("/notes/" + thisId, function(data){
+      console.log(data);
+      //empty modal title, textarea and notes
+      $('#noteModalLabel').empty();
+      $('#notesBody').empty();
+      $('#notestext').val('');
+
+      //delete button for individual note
+
+      //add id of the current NEWS article to modal label
+      $('#noteModalLabel').append(' ' + thisId);
+      //add notes to body of modal, will loop through if multiple notes
+      for(var i = 0; i<data.note.length; i++) {
+          var button = ' <a href=/deleteNote/' + data.note[i]._id + '><i class="pull-right fa fa-times fa-2x deletex" aria-hidden="true"></i></a>';
+          $('#notesBody').append('<div class="panel panel-default"><div class="noteText panel-body">' + data.note[i].body + '  ' + button + '</div></div>');
+      }
+  });
+});
+
+$(".saveNote").click(function() {
+  // Grab the id associated with the article from the submit button
+    var thisId = $(this).attr("data-value");
+
+
+  // Run a POST request to change the note, using what's entered in the inputs
+    $.ajax({
+      method: "POST",
+      url: "/notes/" + thisId,
+      data: {
+        // Value taken from title input
+
+        // Value taken from note textarea
+        body: $("#notestext").val().trim()
+      }
+    })
+      // With that done
+    .done(function(data) {
+        // Log the response
+        //console.log(data);
+        $('#noteModal').modal('hide');
+
+    });
+  });
 
 
