@@ -1,0 +1,57 @@
+[
+    {
+        "name"  : "HTML5",
+        "link"  : "https://developer.mozilla.org/en-US/docs/Web/HTML",
+        "iconClass": "devicon-html5-plain-wordmark"
+    },
+    {
+        "name"  : "CSS3",
+        "link"  : "https://developer.mozilla.org/en-US/docs/Web/CSS",
+        "iconClass": "devicon-css3-plain-wordmark"
+    },
+    {
+        "name"  : "Bootstrap",
+        "link"  : "https://getbootstrap.com/",
+        "iconClass": "devicon-bootstrap-plain-wordmark"
+    },
+    {
+        "name"  : "JavaScript",
+        "link"  : "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+        "iconClass": "devicon-javascript-plain"
+    },
+    {
+        "name"  : "jQuery",
+        "link"  : "https://api.jquery.com/",
+        "iconClass": "devicon-jquery-plain-wordmark"
+    },
+    {
+        "name"  : "MySQL",
+        "link"  : "https://www.mysql.com/",
+        "iconClass": "devicon-mysql-plain-wordmark"
+    },
+    {
+        "name"  : "MongoDB",
+        "link"  : "https://www.mongodb.com/what-is-mongodb",
+        "iconClass": "devicon-mongodb-plain-wordmark"
+    },
+    {
+        "name"  : "Express",
+        "link"  : "https://expressjs.com/",
+        "iconClass": "devicon-express-original-wordmark"
+    },
+    {
+        "name"  : "React",
+        "link"  : "https://reactjs.org/",
+        "iconClass": "devicon-react-original-wordmark"
+    },
+    {
+        "name"  : "Node.js",
+        "link"  : "https://nodejs.org/en/about/",
+        "iconClass": "devicon-nodejs-plain-wordmark"
+    },
+    {
+        "name"  : "C Sharp",
+        "link"  : "https://docs.microsoft.com/en-us/dotnet/csharp/",
+        "iconClass": "devicon-csharp-plain-wordmark"
+    }
+]

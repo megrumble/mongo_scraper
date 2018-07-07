@@ -10,18 +10,6 @@ body {
 #title {
     cursor: pointer;
 }
-/* .header-jumbo {
-    height:75vh;
-    background:  url('../images/header.jpg');
-    width: 100%;
-}
-.header-wrapper {
-    width: 960px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 5%;
-    background: linear-gradient(transparent, #020202, transparent); */
-/* } */
 .navber {
     margin-bottom: 0;
 }
@@ -85,14 +73,6 @@ textarea {
     font-size: 18px;
 }
 
-/* #articles > div {
-    border: 1px solid #efe8ed;
-    padding: 20px;
-    margin: 20px;
-    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.5);
-    border-radius: 4px;
-    animation: fadeIn 500ms ease-in-out;
-} */
 .panel {
     border: 1px solid #efe8ed;
     padding: 20px;

@@ -6,10 +6,6 @@ const exphbs  = require('express-handlebars');
 const path = require("path");
 
 
-
-//Require models
-// var db = require("./models");
-
 const PORT = process.env.PORT || 3000;
 
 //initialize express
@@ -46,12 +42,7 @@ if (process.env.MONGODB_URI) {
 } else {
   mongoose.connect(databaseUri, { useMongoClient: true});
 }
-// mongoose.connect("mongodb://heroku_xxkr78kt:bmo54c3q0c31m1u2fc0ldn2io4@ds225038.mlab.com:25038/heroku_xxkr78kt", {
-//   useMongoClient: true
-// });
-// mongoose.connect("mongodb://localhost:27017/relix-scraper", {
-//   useMongoClient: true
-// });
+
 // Routes
 require('./config/routes')(app);
 

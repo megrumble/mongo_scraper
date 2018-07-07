@@ -31,7 +31,7 @@
     {{!-- Unless check for those that are false, which means those that haven't been saved yet --}}
 
     {{#each articles}} {{#if this.saved}}
-    <div class='panel panel-default'>
+    <div class='panel'>
         <h3> {{this.title}}</h3>
 
         <div class='panel-body'>
@@ -87,8 +87,7 @@
 </footer>
 <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
     crossorigin="anonymous"></script>
-{{!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-    crossorigin="anonymous"></script> --}}
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="../../assets/js/app.js"></script>
