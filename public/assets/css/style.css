@@ -25,7 +25,7 @@ body {
     color: white;
 }
 .jumbotron .overlay {
-/* background: linear-gradient(, black); */
+background: linear-gradient(rgb(225, 100, 100), black);
 position: absolute;
 opacity: 0.3;
 z-index: auto;
