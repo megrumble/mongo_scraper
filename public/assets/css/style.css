@@ -22,7 +22,7 @@ body {
     padding-top: 20px;
     margin: 0, auto;
     box-shadow: 10px 5px 20px 2px rgb(93, 63, 7);
-    color: white;
+    color:white;
 }
 .jumbotron .overlay {
 background: linear-gradient(rgb(225, 100, 100), black);
